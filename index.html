@@ -23,6 +23,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       margin-bottom: 20px;
+      position: relative;
     }
     .form-group {
       margin-bottom: 15px;
@@ -57,6 +58,10 @@
     }
     button[type="submit"]:hover {
       background-color: #2980b9;
+    }
+    button[type="submit"]:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
     }
     #links-container {
       display: none;
@@ -132,6 +137,30 @@
       margin-top: 10px;
       font-size: 14px;
     }
+    #loading-indicator {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -139,7 +168,7 @@
 
   <div id="form-container">
     <p>Plese submit your details to continue.</p>
-    <form id="data-form" action="https://formspree.io/f/xzzvnrvo" method="POST">
+    <form id="data-form">
       <div class="form-group">
         <label for="name">Full Name</label>
         <input type="text" id="name" name="name" required placeholder="Enter your full name">
@@ -164,8 +193,11 @@
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" name="phone" pattern="[0-9]{9,15}" placeholder="Enter your phone number (9-15 digits)">
       </div>
-      <button type="submit">Submit</button>
+      <button type="submit" id="submit-button">Submit</button>
     </form>
+    <div id="loading-indicator">
+      <div class="spinner"></div>
+    </div>
     <p class="privacy-link">
       By submitting, you agree to our <a href="privacy.html">Privacy Policy</a>.
     </p>
@@ -263,6 +295,13 @@
         return;
       }
 
+      const submitButton = document.getElementById("submit-button");
+      const loadingIndicator = document.getElementById("loading-indicator");
+
+      // Show loading indicator and disable button
+      submitButton.disabled = true;
+      loadingIndicator.style.display = "flex";
+
       const formData = {
         name: this.querySelector('#name').value,
         email: this.querySelector('#email').value,
@@ -279,6 +318,10 @@
       })
       .then(response => response.json())
       .then(data => {
+        // Hide loading indicator and re-enable button
+        submitButton.disabled = false;
+        loadingIndicator.style.display = "none";
+
         if (data.status === 'OK') {
           setCookie("userSubmitted", "true", 30);
           document.getElementById("form-container").style.display = "none";
@@ -288,6 +331,9 @@
         }
       })
       .catch(error => {
+        // Hide loading indicator and re-enable button
+        submitButton.disabled = false;
+        loadingIndicator.style.display = "none";
         console.error("Error:", error);
         alert("Error submitting form. Please try again.");
       });
