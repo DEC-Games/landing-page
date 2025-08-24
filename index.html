@@ -149,14 +149,15 @@
         <input type="email" id="email" name="email" required placeholder="Enter your email">
       </div>
       <div class="form-group">
-        <label for="study-year">Study Year/Grade</label>
-        <select id="study-year" name="study_year" required>
+        <label for="study_year">Study Year/Grade</label>
+        <select id="study_year" name="study_year" required>
           <option value="" disabled selected>Select your study year</option>
-          <option value="Freshman">Freshman</option>
-          <option value="Sophomore">Sophomore</option>
-          <option value="Junior">Junior</option>
-          <option value="Senior">Senior</option>
-          <option value="Other">Other</option>
+          <option value="k7">K7</option>
+          <option value="k8">K8</option>
+          <option value="k9">K9</option>
+          <option value="k10">K10</option>
+          <option value="k11">K11</option>
+          <option value="k12">K12</option>
         </select>
       </div>
       <div class="form-group">
@@ -185,6 +186,21 @@
       <img src="img/pet.png" alt="web-pet">
       <h3>WebPet</h3>
       <a href="https://dec-games.github.io/WebPet/" target="_blank">Play Now</a>
+    </div>
+    <div class="resource-card">
+      <img src="img/balloon.png" alt="balloon">
+      <h3>Balloon Pop Maths</h3>
+      <a href="https://dec-games.github.io/balloon-pop-maths/" target="_blank">Play Now</a>
+    </div>
+    <div class="resource-card">
+      <img src="img/bee.png" alt="bee">
+      <h3>Spelling Bee</h3>
+      <a href="https://dec-games.github.io/Drag-and-Drop-Spelling-Game/" target="_blank">Play Now</a>
+    </div>
+    <div class="resource-card">
+      <img src="img/bird.png" alt="bird">
+      <h3>Flappy Bird</h3>
+      <a href="https://dec-games.github.io/JS-Flappy-Bird/" target="_blank">Play Now</a>
     </div>
   </div>
 
@@ -247,13 +263,23 @@
         return;
       }
 
-      fetch(this.action, {
-        method: this.method,
-        body: new FormData(this),
-        headers: { 'Accept': 'application/json' }
+      const formData = {
+        name: this.querySelector('#name').value,
+        email: this.querySelector('#email').value,
+        study_year: this.querySelector('#study_year').value,
+        phone: this.querySelector('#phone').value
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbxc3J-ZXqz8oZd3XmaPzSJUqJLPkS2xbgfXG8cERtf7W3cOmhB_cISCV2vlIlHBIphSWw/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(formData)
       })
-      .then(response => {
-        if (response.ok) {
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'OK') {
           setCookie("userSubmitted", "true", 30);
           document.getElementById("form-container").style.display = "none";
           document.getElementById("links-container").style.display = "grid";
