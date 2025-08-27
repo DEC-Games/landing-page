@@ -178,6 +178,11 @@
         <input type="email" id="email" name="email" required placeholder="Enter your email">
       </div>
       <div class="form-group">
+        <label for="school">School</label>
+        <input type="text" id="score" name="school" required placeholder="Enter your school">
+      </div>
+      
+      <div class="form-group">
         <label for="study_year">Study Year/Grade</label>
         <select id="study_year" name="study_year" required>
           <option value="" disabled selected>Select your study year</option>
@@ -207,7 +212,7 @@
     <div class="resource-card">
       <img src="img/catch-the-cat.png" alt="catch-the-cat">
       <h3>Catch The Cat</h3>
-      <a href="https://dec-games.github.io/phaser-catch-the-cat/" target="_blank">Play Now</a>
+      <a href="https://dec-games.github.io/phaser-catch-the-cat/" target="_blank" id="play-catch-the-cat">Play Now</a>
     </div>
     <div class="resource-card">
       <img src="img/dragon.png" alt="interative-dragon">
@@ -305,31 +310,50 @@
       const formData = {
         name: this.querySelector('#name').value,
         email: this.querySelector('#email').value,
+        school: this.querySelector('#school').value,
         study_year: this.querySelector('#study_year').value,
         phone: this.querySelector('#phone').value
       };
 
-      fetch('https://script.google.com/macros/s/AKfycbxc3J-ZXqz8oZd3XmaPzSJUqJLPkS2xbgfXG8cERtf7W3cOmhB_cISCV2vlIlHBIphSWw/exec', {
+      fetch('https://submitstudentdata-gksuylu43a-uc.a.run.app', {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plain;charset=utf-8'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       })
-      .then(response => response.json())
-      .then(data => {
+      .then(response => {
         // Hide loading indicator and re-enable button
         submitButton.disabled = false;
         loadingIndicator.style.display = "none";
 
-        if (data.status === 'OK') {
+        if (response.ok) {
           setCookie("userSubmitted", "true", 30);
           document.getElementById("form-container").style.display = "none";
           document.getElementById("links-container").style.display = "grid";
+          // Save them to localStorage
+          localStorage.setItem('userData', JSON.stringify(formData));
+          addParamToGame();
         } else {
           alert("Error submitting form. Please try again.");
         }
-      })
+        return response.json() })
+      // .then(data => {
+      //   // // Hide loading indicator and re-enable button
+      //   // submitButton.disabled = false;
+      //   // loadingIndicator.style.display = "none";
+
+      //   // if (data.status === 'OK') {
+      //   //   setCookie("userSubmitted", "true", 30);
+      //   //   document.getElementById("form-container").style.display = "none";
+      //   //   document.getElementById("links-container").style.display = "grid";
+      //   //   // Save them to localStorage
+      //   //   localStorage.setItem('userData', JSON.stringify(formData));
+      //   //   addParamToGame();
+      //   // } else {
+      //   //   alert("Error submitting form. Please try again.");
+      //   // }
+      // })
       .catch(error => {
         // Hide loading indicator and re-enable button
         submitButton.disabled = false;
@@ -338,6 +362,42 @@
         alert("Error submitting form. Please try again.");
       });
     });
+
+    // This script should run after the HTML has loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      addParamToGame();
+    });
+
+    function addParamToGame() {
+      // 1. Retrieve the saved data from localStorage
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      
+      // 2. Find the link by its new ID
+      const playLink = document.getElementById('play-catch-the-cat');
+
+      // 3. Check if the link and some user data exist
+      if (playLink && userData) {
+        // Get the link's original destination
+        const baseURL = playLink.href;
+
+        // Safely build the URL parameters
+        const params = new URLSearchParams();
+        console.log(baseURL);
+        if (userData.name) {
+          params.append('name', userData.name);
+        console.log(userData.name);
+
+        }
+        if (userData.email) {
+          params.append('email', userData.email);
+        }
+
+        // 4. Update the link's href attribute with the new parameters
+        console.log(params.toString())
+        playLink.href = `${baseURL}?${params.toString()}`;
+        console.log(playLink.href)
+      }
+    }
   </script>
 </body>
 </html>
