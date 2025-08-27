@@ -179,7 +179,7 @@
       </div>
       <div class="form-group">
         <label for="school">School</label>
-        <input type="text" id="score" name="school" required placeholder="Enter your school">
+        <input type="text" id="school" name="school" required placeholder="Enter your school">
       </div>
       
       <div class="form-group">
@@ -326,7 +326,6 @@
         // Hide loading indicator and re-enable button
         submitButton.disabled = false;
         loadingIndicator.style.display = "none";
-
         if (response.ok) {
           setCookie("userSubmitted", "true", 30);
           document.getElementById("form-container").style.display = "none";
@@ -338,22 +337,22 @@
           alert("Error submitting form. Please try again.");
         }
         return response.json() })
-      // .then(data => {
-      //   // // Hide loading indicator and re-enable button
-      //   // submitButton.disabled = false;
-      //   // loadingIndicator.style.display = "none";
+      .then(data => {
+        // // Hide loading indicator and re-enable button
+        // submitButton.disabled = false;
+        // loadingIndicator.style.display = "none";
 
-      //   // if (data.status === 'OK') {
-      //   //   setCookie("userSubmitted", "true", 30);
-      //   //   document.getElementById("form-container").style.display = "none";
-      //   //   document.getElementById("links-container").style.display = "grid";
-      //   //   // Save them to localStorage
-      //   //   localStorage.setItem('userData', JSON.stringify(formData));
-      //   //   addParamToGame();
-      //   // } else {
-      //   //   alert("Error submitting form. Please try again.");
-      //   // }
-      // })
+        // if (data.status === 'OK') {
+        //   setCookie("userSubmitted", "true", 30);
+        //   document.getElementById("form-container").style.display = "none";
+        //   document.getElementById("links-container").style.display = "grid";
+        //   // Save them to localStorage
+        //   localStorage.setItem('userData', JSON.stringify(formData));
+        //   addParamToGame();
+        // } else {
+        //   alert("Error submitting form. Please try again.");
+        // }
+      })
       .catch(error => {
         // Hide loading indicator and re-enable button
         submitButton.disabled = false;
