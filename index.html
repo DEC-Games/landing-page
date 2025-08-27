@@ -237,7 +237,7 @@
     <div class="resource-card">
       <img src="img/bird.png" alt="bird">
       <h3>Flappy Bird</h3>
-      <a href="https://dec-games.github.io/JS-Flappy-Bird/" target="_blank">Play Now</a>
+      <a href="https://dec-games.github.io/JS-Flappy-Bird/" target="_blank" id="play-flappy-bird">Play Now</a>
     </div>
   </div>
 
@@ -373,7 +373,12 @@
       
       // 2. Find the link by its new ID
       const playLink = document.getElementById('play-catch-the-cat');
+      addParamToPlayLink(playLink)
+      const playLink2 = document.getElementById('play-flappy-bird');
+      addParamToPlayLink(playLink2)
+    }
 
+    function addParamToPlayLink(playLink) {
       // 3. Check if the link and some user data exist
       if (playLink && userData) {
         // Get the link's original destination
@@ -381,20 +386,15 @@
 
         // Safely build the URL parameters
         const params = new URLSearchParams();
-        console.log(baseURL);
         if (userData.name) {
           params.append('name', userData.name);
-        console.log(userData.name);
-
         }
         if (userData.email) {
           params.append('email', userData.email);
         }
 
         // 4. Update the link's href attribute with the new parameters
-        console.log(params.toString())
         playLink.href = `${baseURL}?${params.toString()}`;
-        console.log(playLink.href)
       }
     }
   </script>
