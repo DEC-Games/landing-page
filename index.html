@@ -373,12 +373,12 @@
       
       // 2. Find the link by its new ID
       const playLink = document.getElementById('play-catch-the-cat');
-      addParamToPlayLink(playLink)
+      addParamToPlayLink(playLink, userData)
       const playLink2 = document.getElementById('play-flappy-bird');
-      addParamToPlayLink(playLink2)
+      addParamToPlayLink(playLink2, userData)
     }
 
-    function addParamToPlayLink(playLink) {
+    function addParamToPlayLink(playLink, userData) {
       // 3. Check if the link and some user data exist
       if (playLink && userData) {
         // Get the link's original destination
