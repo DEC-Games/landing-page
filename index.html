@@ -227,7 +227,7 @@
     <div class="resource-card">
       <img src="img/goblin.png" alt="globlin">
       <h3>The maze of space goblins</h3>
-      <a href="https://dec-games.github.io/the-maze-of-space-goblins/" target="_blank">Play Now</a>
+      <a href="https://dec-games.github.io/the-maze-of-space-goblins/" target="_blank" id="play-space-goblin">Play Now</a>
     </div>
     <div class="resource-card">
       <img src="img/pacman.png" alt="pacman">
@@ -388,6 +388,8 @@
       const playLink2 = document.getElementById('play-flappy-bird');
       addParamToPlayLink(playLink2, userData)
       addParamToPlayLink(document.getElementById('play-webpet'), userData);
+      addParamToPlayLink(document.getElementById('play-space-goblin'), userData);
+
     }
 
     function addParamToPlayLink(playLink, userData) {
