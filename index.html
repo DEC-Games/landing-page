@@ -164,7 +164,7 @@
   </style>
 </head>
 <body>
-  <h1>Digital Explorer Club</h1>
+  <h1>Digital Explorers Club</h1>
 
   <div id="form-container">
     <p>Plese submit your details to continue.</p>
@@ -217,7 +217,7 @@
     <div class="resource-card">
       <img src="img/pet.png" alt="web-pet">
       <h3>WebPet</h3>
-      <a href="https://dec-games.github.io/WebPet/" target="_blank">Play Now</a>
+      <a href="https://dec-games.github.io/WebPet/" target="_blank" id="play-webpet">Play Now</a>
     </div>
     <div class="resource-card">
       <img src="img/bird.png" alt="bird">
@@ -387,6 +387,7 @@
       addParamToPlayLink(playLink, userData)
       const playLink2 = document.getElementById('play-flappy-bird');
       addParamToPlayLink(playLink2, userData)
+      addParamToPlayLink(document.getElementById('play-webpet'), userData);
     }
 
     function addParamToPlayLink(playLink, userData) {
